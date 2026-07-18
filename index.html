@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Kaif — Deen Guide</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0A2A24">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Mukta:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#0A2A24;
+    --bg-surface:#0F352D;
+    --bg-card:#153F36;
+    --gold:#C9A24B;
+    --gold-light:#E8C97A;
+    --cream:#F4ECD8;
+    --muted:#8FB3A6;
+    --success:#5FA980;
+    --line:rgba(201,162,75,0.25);
+    --shadow:rgba(0,0,0,0.45);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:radial-gradient(ellipse at top, #103B32 0%, var(--bg-deep) 55%, #071E1A 100%);
+    color:var(--cream);
+    font-family:'Mukta', sans-serif;
+    min-height:100vh;
+    position:relative;
+    padding-bottom:80px;
+  }
+  .pattern-layer{ position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.14; }
+  .app{ position:relative; z-index:1; max-width:520px; margin:0 auto; padding:24px 18px 20px; }
+
+  /* header */
+  .brand{ display:flex; align-items:center; gap:12px; margin-bottom:6px; }
+  .brand .mark{
+    width:44px; height:44px; border-radius:12px;
+    background:linear-gradient(160deg, var(--gold), #8f6f2a);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Amiri',serif; font-size:22px; color:var(--bg-deep); font-weight:700;
+    box-shadow:0 6px 16px rgba(201,162,75,0.35);
+  }
+  .brand h1{ font-family:'Amiri',serif; font-size:24px; margin:0; color:var(--gold-light); }
+  .brand .tag{ font-size:12px; color:var(--muted); margin-top:1px; }
+  .hijri{ font-size:12px; color:var(--muted); margin:14px 0 22px; text-align:right; }
+
+  /* section title */
+  .stitle{
+    font-family:'Amiri',serif; font-size:20px; color:var(--gold-light);
+    display:flex; align-items:center; gap:10px; margin:4px 0 14px;
+  }
+  .stitle::after{ content:""; flex:1; height:1px; background:var(--line); }
+  .lead{ color:var(--muted); font-size:13.5px; margin:-6px 0 18px; line-height:1.5; }
+
+  /* card */
+  .card{
+    background:var(--bg-card); border:1px solid var(--line); border-radius:14px;
+    padding:16px 16px; margin-bottom:12px;
+  }
+  .card h3{ font-family:'Amiri',serif; font-size:16.5px; color:var(--gold-light); margin:0 0 6px; }
+  .card p{ font-size:13.5px; color:var(--cream); line-height:1.55; margin:0; }
+  .card .note{ color:var(--muted); font-size:12px; margin-top:6px; }
+
+  /* home grid */
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:6px; }
+  .tile{
+    background:var(--bg-card); border:1px solid var(--line); border-radius:16px;
+    padding:18px 14px; text-align:center; cursor:pointer;
+    transition:transform .18s ease, border-color .18s ease;
+  }
+  .tile:hover{ transform:translateY(-3px); border-color:var(--gold); }
+  .tile .icon{ font-size:26px; }
+  .tile .name{ font-family:'Amiri',serif; font-size:14.5px; color:var(--gold-light); margin-top:8px; }
+  .tile .desc{ font-size:11px; color:var(--muted); margin-top:2px; }
+
+  /* table */
+  table{ width:100%; border-collapse:collapse; font-size:13px; }
+  th,td{ padding:9px 6px; text-align:center; border-bottom:1px solid var(--line); }
+  th{ color:var(--gold-light); font-family:'Poppins',sans-serif; font-weight:500; font-size:11.5px; letter-spacing:0.5px; text-transform:uppercase; }
+  td{ color:var(--cream); }
+  td:first-child, th:first-child{ text-align:left; font-family:'Amiri',serif; font-size:14px; color:var(--gold-light); }
+
+  /* steps list */
+  ol.steps{ margin:0; padding-left:20px; }
+  ol.steps li{ font-size:13.5px; margin-bottom:9px; line-height:1.5; color:var(--cream); }
+  ol.steps li b{ color:var(--gold-light); }
+
+  ul.plain{ margin:0; padding-left:18px; }
+  ul.plain li{ font-size:13.5px; margin-bottom:7px; line-height:1.5; }
+
+  /* calculator */
+  .field{ margin-bottom:12px; }
+  .field label{ display:block; font-size:12.5px; color:var(--muted); margin-bottom:5px; }
+  .field input, .field select{
+    width:100%; background:var(--bg-surface); border:1px solid var(--line);
+    color:var(--cream); border-radius:9px; padding:10px 12px; font-size:14px; font-family:'Mukta',sans-serif;
+  }
+  .field input:focus, .field select:focus{ outline:none; border-color:var(--gold); }
+  .btn{
+    width:100%; padding:13px; border-radius:10px; border:none;
+    background:linear-gradient(160deg, var(--gold-light), var(--gold));
+    color:var(--bg-deep); font-weight:600; font-size:14.5px; cursor:pointer;
+    font-family:'Mukta',sans-serif; margin-top:4px;
+  }
+  .btn:active{ transform:scale(0.99); }
+  .result{
+    margin-top:14px; background:rgba(95,169,128,0.12); border:1px solid var(--success);
+    border-radius:12px; padding:14px; text-align:center; display:none;
+  }
+  .result.show{ display:block; }
+  .result .amount{ font-family:'Amiri',serif; font-size:26px; color:var(--gold-light); }
+  .result .label{ font-size:12px; color:var(--muted); margin-top:2px; }
+
+  .badge{
+    display:inline-block; font-size:10.5px; padding:3px 9px; border-radius:20px;
+    font-family:'Poppins',sans-serif; letter-spacing:0.5px; margin-bottom:2px;
+  }
+  .badge.halal{ background:rgba(95,169,128,0.18); color:var(--success); }
+  .badge.haram{ background:rgba(201,90,90,0.18); color:#e08a8a; }
+
+  /* bottom nav */
+  .nav{
+    position:fixed; bottom:0; left:0; right:0; z-index:5;
+    background:rgba(10,42,36,0.96); backdrop-filter:blur(8px);
+    border-top:1px solid var(--line);
+    display:flex; justify-content:space-around; padding:9px 4px 12px;
+  }
+  .nav button{
+    background:none; border:none; color:var(--muted); font-family:'Mukta',sans-serif;
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    font-size:10.5px; cursor:pointer; padding:4px 6px; flex:1;
+  }
+  .nav button .ic{ font-size:19px; }
+  .nav button.active{ color:var(--gold-light); }
+
+  .page{ display:none; }
+  .page.active{ display:block; animation:fade .3s ease; }
+  @keyframes fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; animation:none !important; } }
+</style>
+</head>
+<body>
+
+<svg class="pattern-layer" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="star" width="80" height="80" patternUnits="userSpaceOnUse">
+      <g stroke="#C9A24B" stroke-width="1" fill="none">
+        <rect x="20" y="20" width="40" height="40" transform="rotate(45 40 40)"/>
+        <rect x="20" y="20" width="40" height="40"/>
+        <circle cx="40" cy="40" r="4" fill="#C9A24B" stroke="none"/>
+      </g>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#star)"/>
+</svg>
+
+<div class="app">
+
+  <div class="brand">
+    <div class="mark">ك</div>
+    <div>
+      <h1>Kaif</h1>
+      <div class="tag">आपका रोज़ाना दीन साथी</div>
+    </div>
+  </div>
+
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <div class="hijri" id="dateLine"></div>
+    <div class="stitle">दीन के रास्ते</div>
+    <div class="grid">
+      <div class="tile" onclick="go('namaz')"><div class="icon">🕌</div><div class="name">नमाज़</div><div class="desc">5 वक़्त व तरीक़ा</div></div>
+      <div class="tile" onclick="go('wazu')"><div class="icon">💧</div><div class="name">वुज़ू</div><div class="desc">क़दम-ब-क़दम</div></div>
+      <div class="tile" onclick="go('zakat')"><div class="icon">☾</div><div class="name">ज़कात</div><div class="desc">कैलकुलेटर</div></div>
+      <div class="tile" onclick="go('fitra')"><div class="icon">✦</div><div class="name">फ़ित्रा</div><div class="desc">कैलकुलेटर</div></div>
+      <div class="tile" onclick="go('halal')"><div class="icon">⚖</div><div class="name">हलाल-हराम</div><div class="desc">आम मसाइल</div></div>
+      <div class="tile" onclick="go('sunnat')"><div class="icon">✧</div><div class="name">सुन्नतें</div><div class="desc">रोज़ाना आदतें</div></div>
+    </div>
+  </div>
+
+  <!-- NAMAZ -->
+  <div class="page" id="page-namaz">
+    <div class="stitle">नमाज़ के 5 वक़्त</div>
+    <table>
+      <tr><th>नमाज़</th><th>सुन्नत</th><th>फ़र्ज़</th><th>सुन्नत/नफ़्ल</th><th>वित्र</th></tr>
+      <tr><td>फ़ज्र</td><td>2</td><td>2</td><td>—</td><td>—</td></tr>
+      <tr><td>ज़ोहर</td><td>4</td><td>4</td><td>2</td><td>—</td></tr>
+      <tr><td>अस्र</td><td>4*</td><td>4</td><td>—</td><td>—</td></tr>
+      <tr><td>मग़रिब</td><td>—</td><td>3</td><td>2</td><td>—</td></tr>
+      <tr><td>ईशा</td><td>4*</td><td>4</td><td>2</td><td>3</td></tr>
+    </table>
+    <p class="card note" style="border:none;background:none;padding:6px 2px 0;">*ग़ैर-मुअक्कदा — छोड़ने पर गुनाह नहीं। रकात तादाद मसलक के हिसाब से थोड़ी अलग हो सकती है, अपने इलाक़े के आलिम से तस्दीक़ कर लें।</p>
+
+    <div class="stitle" style="margin-top:26px;">नमाज़ पढ़ने का तरीक़ा</div>
+    <ol class="steps">
+      <li><b>नियत</b> — दिल में नमाज़ की नियत करें, क़िबले की तरफ़ मुँह करें</li>
+      <li><b>तकबीर-ए-तहरीमा</b> — हाथ उठाकर "अल्लाहु अकबर" कहें और हाथ बाँधें</li>
+      <li><b>क़िराअत</b> — सना, सूरह फ़ातिहा, फिर कोई सूरह पढ़ें</li>
+      <li><b>रुकू</b> — झुककर "सुब्हान रब्बियल अज़ीम" 3 बार पढ़ें</li>
+      <li><b>क़ौमा</b> — सीधे खड़े हों, "रब्बना लकल हम्द" कहें</li>
+      <li><b>सजदा</b> — दो सजदे करें, हर एक में "सुब्हान रब्बियल आला" 3 बार</li>
+      <li>बाक़ी रकातें इसी तरह दोहराएँ, आख़िर में <b>अत्तहिय्यात</b>, दरूद व दुआ पढ़ें</li>
+      <li><b>सलाम</b> — दाएँ फिर बाएँ मुँह फेरकर "अस्सलामु अलैकुम" कहकर नमाज़ ख़त्म करें</li>
+    </ol>
+  </div>
+
+  <!-- WAZU -->
+  <div class="page" id="page-wazu">
+    <div class="stitle">वुज़ू का तरीक़ा</div>
+    <p class="lead">नमाज़ से पहले पाकी हासिल करने का तरीक़ा — तरतीब के साथ, हर उज़्व को 3 बार धोना सुन्नत है</p>
+    <ol class="steps">
+      <li><b>नियत</b> करें और "बिस्मिल्लाह" कहकर शुरू करें</li>
+      <li>दोनों हाथ कलाइयों तक 3 बार धोएँ</li>
+      <li>3 बार कुल्ली करें (मुँह साफ़ करें)</li>
+      <li>3 बार नाक में पानी डालकर साफ़ करें</li>
+      <li>पूरा चेहरा माथे से ठोड़ी तक 3 बार धोएँ</li>
+      <li>दायाँ फिर बायाँ हाथ कोहनियों तक 3 बार धोएँ</li>
+      <li>गीले हाथों से सिर का <b>मसह</b> करें (एक बार)</li>
+      <li>दोनों कानों का मसह करें (एक बार)</li>
+      <li>दायाँ फिर बायाँ पैर टख़नों तक 3 बार धोएँ</li>
+    </ol>
+    <div class="card"><h3>वुज़ू टूटने के आम सबब</h3><p>पेशाब-पाख़ाना, हवा ख़ारिज होना, गहरी नींद, ख़ून/पीप बहना — इनमें से कोई भी हो तो वुज़ू दोबारा करें।</p></div>
+  </div>
+
+  <!-- ZAKAT -->
+  <div class="page" id="page-zakat">
+    <div class="stitle">ज़कात कैलकुलेटर</div>
+    <p class="lead">कुल माल का 2.5% ज़कात वाजिब है, अगर वह निसाब (न्यूनतम हद) से ज़्यादा हो और उस पर एक साल गुज़र गया हो</p>
+    <div class="card">
+      <div class="field"><label>नक़द रक़म (कैश + बैंक बैलेंस)</label><input type="number" id="z-cash" placeholder="₹ 0"></div>
+      <div class="field"><label>सोना (ग्राम)</label><input type="number" id="z-goldg" placeholder="0"></div>
+      <div class="field"><label>सोने का भाव (₹ प्रति ग्राम)</label><input type="number" id="z-goldp" placeholder="₹ 0"></div>
+      <div class="field"><label>चांदी (ग्राम)</label><input type="number" id="z-silverg" placeholder="0"></div>
+      <div class="field"><label>चांदी का भाव (₹ प्रति ग्राम)</label><input type="number" id="z-silverp" placeholder="₹ 0"></div>
+      <div class="field"><label>कुल क़र्ज़ (जो देना है)</label><input type="number" id="z-debt" placeholder="₹ 0"></div>
+      <button class="btn" onclick="calcZakat()">ज़कात निकालें</button>
+      <div class="result" id="z-result">
+        <div class="amount" id="z-amount">₹0</div>
+        <div class="label" id="z-label">वाजिब ज़कात</div>
+      </div>
+    </div>
+    <p class="card note" style="border:none;background:none;">निसाब की मौजूदा वैल्यू (87.48g सोना या 612.36g चांदी) मार्केट रेट के हिसाब से अलग-अलग होती है — सही रक़म के लिए अपने आलिम से मशवरा करें।</p>
+  </div>
+
+  <!-- FITRA -->
+  <div class="page" id="page-fitra">
+    <div class="stitle">सदक़ा-ए-फ़ित्र कैलकुलेटर</div>
+    <p class="lead">ईद-उल-फ़ित्र से पहले हर मुसलमान (ख़ुद व अपने ज़ेर-कफ़ालत अफ़राद की तरफ़ से) पर वाजिब सदक़ा — रक़म इलाक़े के हिसाब से तय होती है</p>
+    <div class="card">
+      <div class="field"><label>फ़ित्रा प्रति व्यक्ति (अपने इलाक़े के हिसाब से ₹ डालें)</label><input type="number" id="f-rate" placeholder="₹ 0"></div>
+      <div class="field"><label>घर में कुल अफ़राद (आप समेत)</label><input type="number" id="f-people" placeholder="0"></div>
+      <button class="btn" onclick="calcFitra()">फ़ित्रा निकालें</button>
+      <div class="result" id="f-result">
+        <div class="amount" id="f-amount">₹0</div>
+        <div class="label">कुल वाजिब फ़ित्रा</div>
+      </div>
+    </div>
+    <p class="card note" style="border:none;background:none;">फ़ित्रे की रक़म आमतौर पर गेहूँ/खजूर की मार्केट क़ीमत पर आधारित होती है — स्थानीय मस्जिद/आलिम से मौजूदा रेट पता कर लें।</p>
+  </div>
+
+  <!-- HALAL/HARAM -->
+  <div class="page" id="page-halal">
+    <div class="stitle">हलाल व हराम — आम मसाइल</div>
+    <div class="card">
+      <span class="badge halal">हलाल</span>
+      <p>ज़बीहा किया हुआ हलाल जानवरों का गोश्त (बिस्मिल्लाह के साथ), मछली व समुद्री खाना, फल-सब्ज़ियाँ, दूध-शहद, अनाज व दालें।</p>
+    </div>
+    <div class="card">
+      <span class="badge haram">हराम</span>
+      <p>सूअर का गोश्त, शराब व नशीली चीज़ें, मुर्दार (बग़ैर ज़बह मरा जानवर), बहता ख़ून, अल्लाह के नाम के अलावा किसी और के नाम पर ज़बह किया गया गोश्त।</p>
+    </div>
+    <div class="card"><h3>सूद (ब्याज)</h3><p>हर तरह का सूद हराम है — चाहे लेना हो या देना, इस्लाम में इसकी सख़्त मुमानियत है।</p></div>
+    <div class="card"><h3>जुआ व सट्टा</h3><p>क़िस्मत/मौक़े पर आधारित हर तरह का जुआ हराम है, चाहे रक़म कम हो या ज़्यादा।</p></div>
+    <p class="card note" style="border:none;background:none;">यह एक आम मालूमाती फ़हरिस्त है, तफ़सीली मसाइल के लिए अपने मसलक के आलिम से राब्ता करें।</p>
+  </div>
+
+  <!-- SUNNAT -->
+  <div class="page" id="page-sunnat">
+    <div class="stitle">रोज़ाना की सुन्नतें</div>
+    <ul class="plain">
+      <li>सुबह जागते ही "अल्हम्दुलिल्लाहिल लज़ी अहयाना..." पढ़ना</li>
+      <li>दाहिनी करवट पर वुज़ू करके सोना</li>
+      <li>खाने से पहले "बिस्मिल्लाह" और बाद में "अल्हम्दुलिल्लाह" कहना</li>
+      <li>दाएँ हाथ से खाना-पीना</li>
+      <li>घर में दाख़िल होते वक़्त सलाम करना</li>
+      <li>मिस्वाक करना, ख़ासकर वुज़ू व नमाज़ से पहले</li>
+      <li>छींक आने पर "अल्हम्दुलिल्लाह" कहना, सुनने वाला "यरहमुकल्लाह" कहे</li>
+      <li>सफ़र या किसी काम की शुरुआत में दुआ पढ़ना</li>
+    </ul>
+  </div>
+
+</div>
+
+<div class="nav">
+  <button class="active" data-p="home" onclick="go('home')"><span class="ic">⌂</span>होम</button>
+  <button data-p="namaz" onclick="go('namaz')"><span class="ic">🕌</span>नमाज़</button>
+  <button data-p="wazu" onclick="go('wazu')"><span class="ic">💧</span>वुज़ू</button>
+  <button data-p="zakat" onclick="go('zakat')"><span class="ic">☾</span>ज़कात</button>
+  <button data-p="fitra" onclick="go('fitra')"><span class="ic">✦</span>फ़ित्रा</button>
+  <button data-p="halal" onclick="go('halal')"><span class="ic">⚖</span>हलाल</button>
+</div>
+
+<script>
+function go(name){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('active', b.dataset.p === name));
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function calcZakat(){
+  const cash = parseFloat(document.getElementById('z-cash').value) || 0;
+  const goldVal = (parseFloat(document.getElementById('z-goldg').value) || 0) * (parseFloat(document.getElementById('z-goldp').value) || 0);
+  const silverVal = (parseFloat(document.getElementById('z-silverg').value) || 0) * (parseFloat(document.getElementById('z-silverp').value) || 0);
+  const debt = parseFloat(document.getElementById('z-debt').value) || 0;
+  const total = Math.max(0, cash + goldVal + silverVal - debt);
+  const zakat = total * 0.025;
+  const box = document.getElementById('z-result');
+  document.getElementById('z-amount').textContent = '₹' + zakat.toLocaleString('en-IN', {maximumFractionDigits:0});
+  document.getElementById('z-label').textContent = 'कुल माल ₹' + total.toLocaleString('en-IN', {maximumFractionDigits:0}) + ' पर वाजिब ज़कात (2.5%)';
+  box.classList.add('show');
+}
+
+function calcFitra(){
+  const rate = parseFloat(document.getElementById('f-rate').value) || 0;
+  const people = parseFloat(document.getElementById('f-people').value) || 0;
+  const total = rate * people;
+  document.getElementById('f-amount').textContent = '₹' + total.toLocaleString('en-IN', {maximumFractionDigits:0});
+  document.getElementById('f-result').classList.add('show');
+}
+
+(function setDate(){
+  const d = new Date();
+  const opts = {weekday:'long', year:'numeric', month:'long', day:'numeric'};
+  document.getElementById('dateLine').textContent = d.toLocaleDateString('hi-IN', opts);
+})();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
